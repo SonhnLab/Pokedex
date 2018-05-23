@@ -14,6 +14,7 @@
 		84B250CD20B4FE72003F940C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84B250CB20B4FE72003F940C /* LaunchScreen.storyboard */; };
 		84B250D820B4FE72003F940C /* PokedexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B250D720B4FE72003F940C /* PokedexTests.swift */; };
 		84B250E320B4FE72003F940C /* PokedexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B250E220B4FE72003F940C /* PokedexUITests.swift */; };
+		84B250F120B50236003F940C /* pokemon.csv in Resources */ = {isa = PBXBuildFile; fileRef = 84B250F020B50236003F940C /* pokemon.csv */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		84B250DE20B4FE72003F940C /* PokedexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokedexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B250E220B4FE72003F940C /* PokedexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokedexUITests.swift; sourceTree = "<group>"; };
 		84B250E420B4FE72003F940C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84B250F020B50236003F940C /* pokemon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pokemon.csv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				84B250C920B4FE72003F940C /* Assets.xcassets */,
 				84B250CB20B4FE72003F940C /* LaunchScreen.storyboard */,
 				84B250CE20B4FE72003F940C /* Info.plist */,
+				84B250F020B50236003F940C /* pokemon.csv */,
 			);
 			path = Pokedex;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 			files = (
 				84B250CD20B4FE72003F940C /* LaunchScreen.storyboard in Resources */,
 				84B250CA20B4FE72003F940C /* Assets.xcassets in Resources */,
+				84B250F120B50236003F940C /* pokemon.csv in Resources */,
 				84B250C820B4FE72003F940C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
