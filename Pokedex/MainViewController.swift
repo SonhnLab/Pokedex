@@ -9,19 +9,28 @@
 import UIKit
 import AVFoundation
 
-class MainViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class MainViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource,
+    UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var musicPlayer: AVAudioPlayer!
     
+    var filteredPokemons = [Pokemon]()
+    
     var pokemons = [Pokemon]()
+    
+    var inSearchMode = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        searchBar.delegate = self
+        
+        searchBar.returnKeyType = .done
         
         parsePokemonCSV()
         initAudio()
@@ -58,10 +67,13 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Pokemon Cell", for: indexPath) as? PokemonCell {
-            
-            let pokemon = pokemons[indexPath.row]
+            let pokemon: Pokemon!
+            if inSearchMode {
+                pokemon = filteredPokemons[indexPath.row]
+            } else {
+                pokemon = pokemons[indexPath.row]
+            }
             cell.configureCell(pokemon)
-            
             return cell
         }
         return UICollectionViewCell()
@@ -72,7 +84,11 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return pokemons.count
+        if inSearchMode {
+            return filteredPokemons.count
+        } else {
+            return pokemons.count
+        }
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -90,6 +106,23 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         } else {
             musicPlayer.play()
             sender.alpha = 1.0
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text == nil || searchBar.text == "" {
+            inSearchMode = false
+            collectionView.reloadData()
+            view.endEditing(true)
+        } else {
+            inSearchMode = true
+            let lowercase = searchBar.text!.lowercased()
+            filteredPokemons = pokemons.filter({$0.name.range(of: lowercase) != nil})
+            collectionView.reloadData()
         }
     }
 

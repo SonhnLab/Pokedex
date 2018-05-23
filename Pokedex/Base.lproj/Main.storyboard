@@ -39,7 +39,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <searchBar contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="1J0-F2-TZp">
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search Pokemon" translatesAutoresizingMaskIntoConstraints="NO" id="1J0-F2-TZp">
                                 <rect key="frame" x="0.0" y="64" width="375" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="VvD-p2-ThS"/>
@@ -136,6 +136,7 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="Hrz-Qa-pE8" id="Alr-6Q-KQs"/>
+                        <outlet property="searchBar" destination="1J0-F2-TZp" id="Xss-X2-2FB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
