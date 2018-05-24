@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Alamofire
+
 
 class Pokemon {
     
@@ -19,6 +21,7 @@ class Pokemon {
     private var _weight: Int!
     private var _baseAttack: Int!
     private var _nextEvolution: String!
+    private var _pokemonUrl: String!
     
     var name: String {
         if _name == nil {
@@ -83,9 +86,84 @@ class Pokemon {
         return _nextEvolution
     }
     
+    var pokemonUrl: String {
+        if _pokemonUrl == nil {
+            _pokemonUrl = ""
+        }
+        return _pokemonUrl
+    }
+    
     init(name: String, pokedexId: Int) {
         _name = name
         _pokedexId = pokedexId
+        
+        _pokemonUrl = "\(BASE_URL)\(pokedexId)/"
+    }
+    
+    func downloadPokemonDetail(completed: @escaping DownloadComplete) {
+        let url = URL(string: pokemonUrl)!
+        Alamofire.request(url).responseJSON() { response in
+            print(response)
+            guard
+                let dict = response.result.value as? Dictionary<String, AnyObject>,
+                let stats = dict["stats"] as? [Dictionary<String, AnyObject>],
+                let types = dict["types"] as? [Dictionary<String, AnyObject>],
+                let weight = dict["weight"] as? Int,
+                let height = dict["height"] as? Int,
+                let species = dict["species"] as? [Dictionary<String, AnyObject>] else {
+                return
+            }
+            self._weight = weight
+            self._height = height
+            for statDict in stats {
+                guard
+                    let stat = statDict["stat"] as? Dictionary<String, AnyObject>,
+                    let name = stat["name"] as? String,
+                    let baseStat = statDict["base_stat"] as? Int else {
+                    return
+                }
+                if name == "attack" {
+                    self._baseAttack = baseStat
+                } else if name == "defense" {
+                    self._defense = baseStat
+                } else {
+                    continue
+                }
+            }
+            var names = [String]()
+            for typeDict in types {
+                guard
+                    let type = typeDict["type"] as? Dictionary<String, AnyObject>,
+                    let name = type["name"] as? String else {
+                    return
+                }
+                names.append(name.capitalized)
+            }
+            self._type = names.joined(separator: "/")
+            let descriptionUrl = URL(string: species[0]["url"] as! String)!
+            Alamofire.request(descriptionUrl).responseJSON(completionHandler: { response in
+                guard
+                    let descriptionDict = response.result.value as? [Dictionary<String, AnyObject>] else {
+                        return
+                }
+                for desc in descriptionDict {
+                    guard
+                        let language = desc["language"] as? Dictionary<String, AnyObject>,
+                        let description = desc["flavor_text"] as? String,
+                        let name = language["name"] as? String else {
+                            return
+                    }
+                    if name == "en" {
+                        self._description = description
+                        break
+                    } else {
+                        continue
+                    }
+                }
+                print(self._description)
+            })
+            completed()
+        }
     }
     
     

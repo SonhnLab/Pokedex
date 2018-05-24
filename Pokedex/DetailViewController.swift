@@ -32,6 +32,21 @@ class DetailViewController: UIViewController {
         nameLabel.text = pokemon.name.capitalized
         pokemonImage.image = UIImage(named: "\(pokemon.pokedexId)")
         currentEvolutionImage.image = UIImage(named: "\(pokemon.pokedexId)")
+        nextEvolutionImage.image = UIImage(named: "\(pokemon.pokedexId + 1)")
+        
+        pokemon.downloadPokemonDetail {
+            self.updateUI()
+        }
+    }
+    
+    func updateUI() {
+        
+        typeLabel.text = pokemon.type
+        defenseLabel.text = "\(pokemon.defense)"
+        heightLabel.text = "\(pokemon.height)"
+        pokedexIdLabel.text = "\(pokemon.pokedexId)"
+        weightLabel.text = "\(pokemon.weight)"
+        baseAttackLabel.text = "\(pokemon.baseAttack)"
     }
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
