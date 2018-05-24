@@ -40,13 +40,14 @@ class DetailViewController: UIViewController {
     }
     
     func updateUI() {
-        
+        descriptionLabel.text = pokemon.description
         typeLabel.text = pokemon.type
         defenseLabel.text = "\(pokemon.defense)"
         heightLabel.text = "\(pokemon.height)"
         pokedexIdLabel.text = "\(pokemon.pokedexId)"
         weightLabel.text = "\(pokemon.weight)"
         baseAttackLabel.text = "\(pokemon.baseAttack)"
+        evolutionLabel.text = pokemon.nextEvolution
     }
     
     @IBAction func backButtonPressed(_ sender: UIButton) {

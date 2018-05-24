@@ -103,14 +103,13 @@ class Pokemon {
     func downloadPokemonDetail(completed: @escaping DownloadComplete) {
         let url = URL(string: pokemonUrl)!
         Alamofire.request(url).responseJSON() { response in
-            print(response)
             guard
                 let dict = response.result.value as? Dictionary<String, AnyObject>,
                 let stats = dict["stats"] as? [Dictionary<String, AnyObject>],
                 let types = dict["types"] as? [Dictionary<String, AnyObject>],
                 let weight = dict["weight"] as? Int,
                 let height = dict["height"] as? Int,
-                let species = dict["species"] as? [Dictionary<String, AnyObject>] else {
+                let species = dict["species"] as? Dictionary<String, AnyObject> else {
                 return
             }
             self._weight = weight
@@ -140,27 +139,55 @@ class Pokemon {
                 names.append(name.capitalized)
             }
             self._type = names.joined(separator: "/")
-            let descriptionUrl = URL(string: species[0]["url"] as! String)!
+            let descriptionUrl = URL(string: species["url"] as! String)!
             Alamofire.request(descriptionUrl).responseJSON(completionHandler: { response in
                 guard
-                    let descriptionDict = response.result.value as? [Dictionary<String, AnyObject>] else {
+                    let descriptionDict = response.result.value as? Dictionary<String, AnyObject>,
+                    let entries = descriptionDict["flavor_text_entries"] as? [Dictionary<String, AnyObject>],
+                    let evolutionChain = descriptionDict["evolution_chain"] as? Dictionary<String, AnyObject> else {
                         return
                 }
-                for desc in descriptionDict {
+                for entry in entries {
                     guard
-                        let language = desc["language"] as? Dictionary<String, AnyObject>,
-                        let description = desc["flavor_text"] as? String,
+                        let language = entry["language"] as? Dictionary<String, AnyObject>,
+                        let description = entry["flavor_text"] as? String,
                         let name = language["name"] as? String else {
                             return
                     }
                     if name == "en" {
-                        self._description = description
+                        let newDescription = description.replacingOccurrences(of: "\n", with: " ")
+                        self._description = newDescription
                         break
                     } else {
                         continue
                     }
                 }
-                print(self._description)
+                let envolutionUrl = URL(string: evolutionChain["url"] as! String)!
+                Alamofire.request(envolutionUrl).responseJSON(completionHandler: { response in
+                    guard
+                        let evolutionDict = response.result.value as? Dictionary<String, AnyObject>,
+                        let chain = evolutionDict["chain"] as? Dictionary<String, AnyObject>,
+                        let evolvesTo = chain["evolves_to"] as? [Dictionary<String, AnyObject>] else {
+                        return
+                    }
+                    if evolvesTo.count > 0 {
+                        guard
+                            let evolutionDetails = evolvesTo[0]["evolution_details"] as? [Dictionary<String, AnyObject>],
+                            let species = evolvesTo[0]["species"] as? Dictionary<String, AnyObject>,
+                            let name = species["name"] as? String else {
+                            return
+                        }
+                        if evolutionDetails.count > 0 {
+                            guard
+                                let minLevel = evolutionDetails[0]["min_level"] as? Int else {
+                                return
+                            }
+                            self._nextEvolution = "Next Evolution: \(name.capitalized) LVL \(minLevel)"
+                        }
+                    }
+                    completed()
+                })
+                completed()
             })
             completed()
         }
