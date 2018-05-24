@@ -405,6 +405,20 @@
                             <constraint firstItem="mCU-RQ-eMn" firstAttribute="top" secondItem="Abk-mz-Ckt" secondAttribute="bottom" id="zdJ-Za-OHf"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="baseAttackLabel" destination="vdU-zr-QBC" id="gHI-VX-uap"/>
+                        <outlet property="currentEvolutionImage" destination="dfp-hT-VcS" id="ghJ-6n-PaM"/>
+                        <outlet property="defenseLabel" destination="MAH-Jg-G9j" id="cQS-Td-HiB"/>
+                        <outlet property="descriptionLabel" destination="c7u-7C-0Up" id="1m3-Eg-thd"/>
+                        <outlet property="evolutionLabel" destination="QYF-oE-kSs" id="zOi-tf-8MV"/>
+                        <outlet property="heightLabel" destination="3fM-gw-rPI" id="LLh-aK-fLE"/>
+                        <outlet property="nameLabel" destination="Izb-ru-6Cs" id="SZJ-h6-E9t"/>
+                        <outlet property="nextEvolutionImage" destination="IN8-vR-Xtv" id="NTJ-5f-XfM"/>
+                        <outlet property="pokedexIdLabel" destination="rYA-C0-jB7" id="rxE-wa-uHW"/>
+                        <outlet property="pokemonImage" destination="B0h-I2-tI1" id="Hgq-tN-bAu"/>
+                        <outlet property="typeLabel" destination="8SL-hU-Cv5" id="r86-g6-qln"/>
+                        <outlet property="weightLabel" destination="jvO-ZG-3fG" id="tK4-xO-7yC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YrM-Tf-YRe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
